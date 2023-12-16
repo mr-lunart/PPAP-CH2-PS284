@@ -111,7 +111,7 @@ def uploader_face():
       data = session.execute(text("SELECT user_id FROM capstone.verification_statue WHERE user_id = '" + user_id + "'"))
       
       if len(data.all()) == 0:
-         user_data = {'user_id': user_id, 'image_path': image_path, 'status':0 }
+         user_data = {'user_id': user_id, 'image_path': image_path, 'status':2 }
          insert_query = text("INSERT INTO capstone.verification_statue (user_id, image_path, status) VALUES (:user_id, :image_path, :status)")
          session.execute(insert_query, user_data)
          session.commit() 
@@ -182,3 +182,20 @@ def uploader_face():
             "data": None
           })
 
+@app.route("/confirm", methods=["POST"])
+@auth.login_required()
+def confirm_upload():
+  user_id = request.form.get('user_id')
+  session = Session()
+  user_data = {'status':0 ,'user_id':user_id}
+  insert_query = text("UPDATE capstone.verification_statue SET `status` = 0 WHERE user_id=:user_id;")
+  session.execute(insert_query, user_data)
+  session.commit() 
+  session.close()
+  return jsonify({
+            "status": {
+                "code": 200,
+                "message": "request success, upload confirmed"
+            },
+            "data": True
+          })
