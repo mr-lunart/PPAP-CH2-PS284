@@ -13,7 +13,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
 from sklearn.ensemble import IsolationForest
-from joblib import dump, load
+from joblib import dump
 
 app = Flask('modeler')
 project_id = "checkcapstone"
@@ -127,8 +127,8 @@ def model_generator():
             shutil.rmtree(temp_folder)
 
             session = Session()
-            user_data = {'status':1 ,'user_id':user_id}
-            insert_query = text("UPDATE capstone.verification_statue SET `status` = :status WHERE user_id=:user_id;")
+            user_data = {'status':1 ,'user_id':user_id, 'model_path':str(user_id)+".joblib"}
+            insert_query = text("UPDATE capstone.verification_statue SET `status`= :status, `model_path`= :model_path  WHERE user_id=:user_id;")
             session.execute(insert_query, user_data)
             session.commit() 
             session.close()
