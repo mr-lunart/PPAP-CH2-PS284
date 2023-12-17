@@ -206,13 +206,23 @@ def check_status():
   session = Session()
   user_data = {'user_id':user_id}
   insert_query = text("SELECT status,user_id FROM capstone.verification_statue WHERE user_id = :user_id")
-  query_result = session.execute(insert_query, user_data).first() 
+  query_result = session.execute(insert_query, user_data).first()
   session.close()
-  return jsonify({
-            "status": {
-                "code": 200,
-                "message": "request success, data returned"
+  if len(query_result) > 0: 
+    return jsonify({
+              "status": {
+                  "code": 200,
+                  "message": "request success, data returned"
 
-            },
-            "data": f"{query_result}"
-          })
+              },
+              "data": f"{query_result}",
+            })
+  else: 
+    return jsonify({
+              "status": {
+                  "code": 404,
+                  "message": "user id not found"
+
+              },
+              "data": f"{query_result}",
+            })
