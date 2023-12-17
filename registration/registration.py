@@ -81,10 +81,9 @@ def face_detector(image):
     
     cropped_image = image.crop((crop[0],crop[1],crop[0]+crop[2],crop[1]+crop[3]))
     resize_image = cropped_image.resize((160,160))
-    photo = resize_image.convert('L')
-    enhancer = ImageEnhance.Sharpness(photo)
+    enhancer = ImageEnhance.Sharpness(resize_image)
     photo = enhancer.enhance(2)
-    photo = ImageOps.equalize(photo)
+
     return photo
   
   else:
@@ -198,4 +197,22 @@ def confirm_upload():
                 "message": "request success, upload confirmed"
             },
             "data": True
+          })
+
+@app.route("/check", methods=["POST"])
+@auth.login_required()
+def check_status():
+  user_id = request.form.get('user_id')
+  session = Session()
+  user_data = {'user_id':user_id}
+  insert_query = text("SELECT status,user_id FROM capstone.verification_statue WHERE user_id = :user_id")
+  query_result = session.execute(insert_query, user_data).first() 
+  session.close()
+  return jsonify({
+            "status": {
+                "code": 200,
+                "message": "request success, data returned"
+
+            },
+            "data": f"{query_result}"
           })
