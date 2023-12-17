@@ -113,7 +113,7 @@ def index():
           "code": 200,
           "message": "Success fetching the API"
        },
-       "data": None
+       "data": f"{0}"
     }), 200
 
 
@@ -130,7 +130,7 @@ def preprocessing():
               "status": {
                  "code": 200,
                  "message": "request success, face undetected"},
-              "data": None
+              "data": f"{0}"
            }),200
 
         else :
@@ -145,9 +145,10 @@ def preprocessing():
           return jsonify({
             "status": {
                 "code": 200,
-                "message": "request success, face detected"
+                "message": "face confirmed"
             },
-            "data": f"result,{result}"
+            "data": f"{result}",
+            "user": f"{user_data}"
           }),200
       
       else:
@@ -156,7 +157,7 @@ def preprocessing():
               "code": 422,
               "message": "request success, wrong file extension"
           },
-          "data": None
+          "data": f"{2}"
         })
     
     else:
@@ -165,7 +166,7 @@ def preprocessing():
             "code": 405,
             "message": "method not allowed"
         },
-        "data": None
+        "data": f"{3}"
       })
 
 
