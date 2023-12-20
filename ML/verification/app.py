@@ -1,9 +1,9 @@
 import numpy as np
 import dlib
 import tensorflow as tf
-import os
 import io
-from PIL import Image, ImageOps, ImageEnhance
+import os
+from PIL import Image, ImageEnhance
 from flask import Flask, jsonify, request
 from auth import auth
 from joblib import load
@@ -14,7 +14,7 @@ from google.oauth2 import service_account
 from google.cloud import storage
 from google.cloud.sql.connector import Connector
 
-app = Flask('verification')
+app = Flask('__main__')
 app.config['ALLOWED_EXTENSIONS'] = set(['jpg', 'jpeg'])
 app.config['MODEL_FILE'] = 'models/'
 project_id = "checkcapstone"
@@ -113,64 +113,88 @@ def index():
           "code": 200,
           "message": "Success fetching the API"
        },
-       "data": f"{0}"
+       "data": None
     }), 200
 
 
 @app.route("/verification", methods=["POST"])
 @auth.login_required()
 def preprocessing():
-    if request.method == "POST":
-      image = request.files["face_photo"]
-      user_id = request.form.get('user_id')
-      if image and allowed_file(image.filename):
-        face = face_detector(image)
-        if type(face) == type(None):
-           return jsonify({
-              "status": {
-                 "code": 200,
-                 "message": "request success, face undetected"},
-              "data": f"{0}"
-           }),200
+  if request.method == "POST":
+    image = request.files["face_photo"]
+    user_id = request.form.get('user_id')
 
-        else :
-          session = Session()
-          user_data = {'user_id':user_id}
-          insert_query = text("SELECT user_id,model_path FROM capstone.verification_statue WHERE user_id = :user_id")
-          query_result = session.execute(insert_query, user_data).first()
-          session.close()
+    if image and allowed_file(image.filename):
+      face = face_detector(image)
+
+      if type(face) == type(None):
+          return jsonify({
+            "status": {
+                "code": 406,
+                "message": "request success, face undetected"},
+            "data": 0,
+            "user": f"{user_id}"
+          }),406
+
+      else :
+        session = Session()
+        user_data = {'user_id':user_id}
+        selects_query = text("SELECT user_id,model_path FROM capstone.verification_statue WHERE user_id = :user_id")
+        query_result = session.execute(selects_query, user_data).first()
+        session.close()
+
+        if type(query_result) == type(None):
+            return jsonify({
+              "status": {
+                "code": 404,
+                "message": "user id not found"
+              },
+              "data": f"{query_result}",
+              "user": f"{user_id}"
+            }),404
+        
+        else:
           if_clf = download_joblib(query_result[1])
           vector_face = predict_face(face)
           result = if_clf.predict(vector_face)
-          return jsonify({
-            "status": {
-                "code": 200,
-                "message": "face confirmed"
-            },
-            "data": f"{result}",
-            "user": f"{user_data}"
-          }),200
-      
-      else:
-         return jsonify({
-          "status": {
-              "code": 422,
-              "message": "request success, wrong file extension"
-          },
-          "data": f"{2}"
-        })
+          if result[0] == -1:
+            return jsonify({
+              "status": {
+                  "code": 200,
+                  "message": "face false"
+              },
+              "data": -1,
+              "user": f"{user_id}"
+            }),200
+          
+          if result[0] == 1:
+            return jsonify({
+              "status": {
+                  "code": 200,
+                  "message": "face confirmed"
+              },
+              "data": 1,
+              "user": f"{user_id}"
+            }),200
     
     else:
-      return jsonify({
+        return jsonify({
         "status": {
-            "code": 405,
-            "message": "method not allowed"
+            "code": 422,
+            "message": "request success, wrong file extension"
         },
-        "data": f"{3}"
+        "data": 2
       })
 
+  else:
+    return jsonify({
+      "status": {
+          "code": 405,
+          "message": "method not allowed"
+      },
+      "data": 3
+    })
 
-if __name__ == "verification":
-    app.run(debug=False,
-            host="0.0.0.0",
-            )
+
+if __name__ == "__main__":
+    app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 8088)))
