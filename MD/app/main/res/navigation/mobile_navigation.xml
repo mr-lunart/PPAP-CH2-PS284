@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.ppaps.ui.main.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_emergencyFragment"
+            app:destination="@id/emergencyFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_bookingFragment"
+            app:destination="@id/bookingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_account"
+        android:name="com.example.ppaps.ui.main.account.AccountFragment"
+        android:label="@string/title_account"
+        tools:layout="@layout/fragment_account" />
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.example.ppaps.ui.main.history.HistoryFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/emergencyFragment"
+        android:name="com.example.ppaps.ui.main.emergency.EmergencyFragment"
+        android:label="fragment_emergency"
+        tools:layout="@layout/fragment_emergency" >
+        <action
+            android:id="@+id/action_emergencyFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.ppaps.ui.main.home.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_emergencyResultFragment"
+            app:destination="@id/emergencyResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/callFragment"
+        android:name="com.example.ppaps.ui.main.call.CallFragment"
+        android:label="fragment_call"
+        tools:layout="@layout/fragment_call" >
+        <action
+            android:id="@+id/action_callFragment_to_emergencyConfirmFragment"
+            app:destination="@id/emergencyConfirmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emergencyConfirmFragment"
+        android:name="com.example.ppaps.ui.main.confirm.EmergencyConfirmFragment"
+        android:label="fragment_emergency_confirm"
+        tools:layout="@layout/fragment_emergency_confirm" >
+        <action
+            android:id="@+id/action_emergencyConfirmFragment_to_trackingFragment"
+            app:destination="@id/trackingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emergencyResultFragment"
+        android:name="com.example.ppaps.ui.main.emergency.EmergencyResultFragment"
+        android:label="fragment_emergency_result"
+        tools:layout="@layout/fragment_emergency_result" >
+        <action
+            android:id="@+id/action_emergencyResultFragment_to_callFragment"
+            app:destination="@id/callFragment" />
+        <action
+            android:id="@+id/action_emergencyResultFragment_to_cameraFragment3"
+            app:destination="@id/cameraFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/cameraFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookingFragment"
+        android:name="com.example.ppaps.ui.main.booking.BookingFragment"
+        android:label="fragment_booking"
+        tools:layout="@layout/fragment_booking" />
+    <fragment
+        android:id="@+id/trackingFragment"
+        android:name="com.example.ppaps.ui.main.tracking.TrackingFragment"
+        android:label="fragment_tracking"
+        tools:layout="@layout/fragment_tracking" />
+</navigation>

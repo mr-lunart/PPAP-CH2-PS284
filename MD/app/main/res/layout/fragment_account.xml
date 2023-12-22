@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@drawable/gradient_bg"
+    tools:context=".ui.main.account.AccountFragment">
+
+    <!-- Foto Pengguna -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_user"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        tools:src="@tools:sample/avatars"/>
+
+    <!-- Username -->
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_user"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        tools:text="@string/username"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Nomor Telepon -->
+    <TextView
+        android:id="@+id/phoneNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/usernameTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        tools:text="@string/phone_number"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <!-- Alamat -->
+    <TextView
+        android:id="@+id/addressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/phoneNumberTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        tools:text="@string/address"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <!-- Tombol Edit Profil -->
+    <Button
+        android:id="@+id/btn_edit_profile"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/addressTextView"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:text="Edit Profile"
+        android:drawableLeft="@drawable/baseline_edit_24"
+        android:textColor="@color/text_color"
+        android:backgroundTint="@color/white" />
+
+    <!-- Tombol About -->
+    <Button
+        android:id="@+id/button_about"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/btn_edit_profile"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:text="About"
+        android:drawableLeft="@drawable/baseline_more_horiz_24"
+        android:textColor="@color/text_color"
+        android:backgroundTint="@color/white" />
+
+    <!-- Tombol Feedback -->
+    <Button
+        android:id="@+id/button_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/button_about"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:text="Feedback"
+        android:drawableLeft="@drawable/baseline_feedback_24"
+        android:textColor="@color/text_color"
+        android:backgroundTint="@color/white" />
+
+    <!-- Tombol Setting -->
+    <Button
+        android:id="@+id/button_setting"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/button_feedback"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:text="Setting"
+        android:drawableLeft="@drawable/baseline_settings_24"
+        android:textColor="@color/text_color"
+        android:backgroundTint="@color/white" />
+</RelativeLayout>
